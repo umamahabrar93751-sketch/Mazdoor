@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login / Register - Mazdoor.com</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .auth-container {
+            display: flex; min-height: 100vh;
+        }
+        .auth-image {
+            flex: 1; background: url('https://images.unsplash.com/photo-1541888086225-f6742548cbca?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80') center/cover;
+            position: relative;
+        }
+        .auth-image::after {
+            content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(37, 99, 235, 0.2), rgba(30, 64, 175, 0.9));
+        }
+        .auth-quote { position: absolute; bottom: 40px; left: 40px; right: 40px; color: white; z-index: 1; }
+        
+        .auth-form-wrapper {
+            flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 40px; max-width: 600px; margin: 0 auto;
+        }
+        
+        .auth-tabs { display: flex; margin-bottom: 32px; border-bottom: 2px solid var(--border-color); }
+        .auth-tab {
+            flex: 1; text-align: center; padding: 16px; cursor: pointer; font-weight: 600; color: var(--text-muted);
+            transition: all 0.2s;
+        }
+        .auth-tab.active { color: var(--primary); border-bottom: 2px solid var(--primary); margin-bottom: -2px; }
+        
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 500; }
+        .form-control { width: 100%; padding: 16px; border: 1px solid var(--border-color); border-radius: var(--radius-md); font-size: 1rem; }
+        
+        @media (max-width: 768px) {
+            .auth-image { display: none; }
+            .auth-form-wrapper { padding: 24px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-container">
+        <!-- Visual Side -->
+        <div class="auth-image">
+            <div class="auth-quote">
+                <a href="index.html" class="logo" style="color: white; margin-bottom: 24px; display: inline-flex;">
+                    <i class="fa-solid fa-helmet-safety"></i>
+                    <span>Mazdoor.com</span>
+                </a>
+                <h2 style="color: white; font-size: 2.5rem; margin-bottom: 16px;">Building the nation, one job at a time.</h2>
+                <p>Join thousands of workers and employers connecting seamlessly across Pakistan.</p>
+            </div>
+        </div>
+        
+        <!-- Form Side -->
+        <div class="auth-form-wrapper">
+            <h2 style="margin-bottom: 8px;">Welcome Back!</h2>
+            <p style="color: var(--text-muted); margin-bottom: 32px;">Please sign in to access your account dashboard.</p>
+            
+            <div class="auth-tabs">
+                <div class="auth-tab active" id="tabLogin" onclick="switchTab('login')">Login</div>
+                <div class="auth-tab" id="tabRegister" onclick="switchTab('register')">Register New Account</div>
+            </div>
+            
+            <!-- Login Form -->
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label>Phone Number or Email</label>
+                    <input type="text" id="loginInput" class="form-control" placeholder="03XX-XXXXXXX" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" class="form-control" placeholder="••••••••" required>
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                    <label style="display: flex; align-items: center; gap: 8px; font-size: 0.9rem; font-weight: 400;">
+                        <input type="checkbox"> Remember me
+                    </label>
+                    <a href="#" style="color: var(--primary); text-decoration: none; font-size: 0.9rem; font-weight: 500;">Forgot Password?</a>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" style="width: 100%; padding: 16px; font-size: 1.1rem; border-radius: var(--radius-md);">
+                    Login Securely
+                </button>
+            </form>
+
+            <!-- Register Form (Hidden by default) -->
+            <form id="registerForm" style="display: none;" onsubmit="event.preventDefault(); alert('Registration successful! Please login.'); switchTab('login');">
+                <div class="form-group">
+                    <label>I am a...</label>
+                    <select class="form-control" required style="font-weight: 600;">
+                        <option value="worker">👷 Worker (Looking for jobs)</option>
+                        <option value="employer">🏢 Employer (Looking to hire)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" class="form-control" placeholder="e.g. Ali Raza" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="text" class="form-control" placeholder="03XX-XXXXXXX" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Create Password</label>
+                    <input type="password" class="form-control" placeholder="••••••••" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" style="width: 100%; padding: 16px; font-size: 1.1rem; border-radius: var(--radius-md); margin-top: 12px;">
+                    Create Account
+                </button>
+            </form>
+
+            <div style="margin-top: 24px; text-align: center; color: var(--text-muted); font-size: 0.95rem; line-height: 1.5; background: var(--bg-light); padding: 16px; border-radius: var(--radius-md);">
+                <strong>Demo Login Rules:</strong><br>
+                Type <strong style="color: var(--primary);">admin</strong> to view Admin Panel<br>
+                Type <strong style="color: var(--success);">employer</strong> to view Employer Dashboard<br>
+                Type <strong>worker</strong> to view Worker Dashboard
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.onload = function() {
+            // Check if the URL has #register in it
+            if (window.location.hash === '#register') {
+                switchTab('register');
+            }
+        };
+
+        function switchTab(tab) {
+            const loginForm = document.getElementById('loginForm');
+            const registerForm = document.getElementById('registerForm');
+            const tabLogin = document.getElementById('tabLogin');
+            const tabRegister = document.getElementById('tabRegister');
+
+            if (tab === 'login') {
+                loginForm.style.display = 'block';
+                registerForm.style.display = 'none';
+                tabLogin.classList.add('active');
+                tabRegister.classList.remove('active');
+            } else {
+                loginForm.style.display = 'none';
+                registerForm.style.display = 'block';
+                tabRegister.classList.add('active');
+                tabLogin.classList.remove('active');
+            }
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const userInput = document.getElementById('loginInput').value.toLowerCase().trim();
+            
+            if (userInput === 'admin') {
+                window.location.href = 'admin-panel.html';
+            } else if (userInput === 'employer') {
+                window.location.href = 'employer-dashboard.html';
+            } else {
+                // Default fallback for any other input (like a phone number) goes to worker dashboard
+                window.location.href = 'worker-dashboard.html';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employer Dashboard - Mazdoor.com</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .dashboard-layout { display: flex; min-height: 100vh; padding-top: 70px; }
+        
+        .sidebar {
+            width: 250px; background: white; border-right: 1px solid var(--border-color);
+            padding: 24px 0; position: fixed; height: calc(100vh - 70px);
+        }
+        .sidebar a {
+            display: flex; align-items: center; gap: 12px; padding: 16px 24px;
+            color: var(--text-dark); text-decoration: none; font-weight: 500;
+        }
+        .sidebar a:hover, .sidebar a.active { background: var(--bg-light); color: var(--success); border-right: 3px solid var(--success); }
+        .sidebar i { width: 20px; text-align: center; }
+        
+        .main-content { margin-left: 250px; padding: 32px; flex: 1; background: var(--bg-light); }
+        .page-header { margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; }
+        
+        .active-job-card { background: white; padding: 24px; border-radius: var(--radius-md); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); margin-bottom: 24px; }
+        .job-title { font-size: 1.25rem; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;}
+        
+        .worker-list { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 20px; }
+        .worker-item { display: flex; justify-content: space-between; align-items: center; padding: 16px; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-light); }
+        .worker-info { display: flex; align-items: center; gap: 16px; }
+        .avatar { width: 48px; height: 48px; border-radius: 50%; background: #CBD5E1; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: white;}
+        
+        @media (max-width: 768px) {
+            .dashboard-layout { flex-direction: column; }
+            .sidebar { width: 100%; position: static; height: auto; border-right: none; overflow-x: auto; white-space: nowrap; padding: 0; }
+            .sidebar a { display: inline-flex; padding: 16px; }
+            .sidebar a.active { border-right: none; border-bottom: 3px solid var(--success); }
+            .main-content { margin-left: 0; padding: 16px; }
+            .worker-item { flex-direction: column; align-items: flex-start; gap: 16px; }
+            .worker-item .btn { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <i class="fa-solid fa-helmet-safety text-primary"></i>
+                <span>Mazdoor.com</span>
+            </a>
+            <div class="nav-actions">
+                <a href="post-job.html" class="btn btn-success"><i class="fa-solid fa-plus"></i> Post New Job</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <a href="#" class="active"><i class="fa-solid fa-briefcase"></i> Active Jobs</a>
+            <a href="post-job.html"><i class="fa-solid fa-plus"></i> Post Job</a>
+            <a href="#"><i class="fa-solid fa-users"></i> Previous Workers</a>
+            <a href="#"><i class="fa-solid fa-building"></i> My Profile</a>
+            <a href="index.html" style="color: var(--danger); margin-top: auto;"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="page-header">
+                <h2>Manage Active Jobs</h2>
+            </div>
+
+            <div class="active-job-card">
+                <div class="job-title">
+                    <strong>Construction Helpers Needed (DHA Phase 6)</strong>
+                    <span style="background: #DCFCE7; color: #16A34A; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold;">2/2 Hired - Active</span>
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.9rem;">Posted Today • Rs 1,500/day</p>
+                
+                <h4 style="margin-top: 24px; margin-bottom: 8px;">Workers who accepted:</h4>
+                <div class="worker-list">
+                    <!-- Worker 1 -->
+                    <div class="worker-item">
+                        <div class="worker-info">
+                            <div class="avatar bg-blue"><i class="fa-solid fa-user"></i></div>
+                            <div>
+                                <strong style="display: block;">Ali Raza</strong>
+                                <span style="font-size: 0.9rem; color: var(--text-muted);">⭐ 4.8 | 50+ Jobs Done</span>
+                            </div>
+                        </div>
+                        <button class="btn btn-outline" style="color: var(--success); border-color: var(--success);">
+                            <i class="fa-solid fa-phone"></i> Call Worker
+                        </button>
+                    </div>
+                    
+                    <!-- Worker 2 -->
+                    <div class="worker-item">
+                        <div class="worker-info">
+                            <div class="avatar bg-orange"><i class="fa-solid fa-user"></i></div>
+                            <div>
+                                <strong style="display: block;">Muhammad Usman</strong>
+                                <span style="font-size: 0.9rem; color: var(--text-muted);">⭐ 4.5 | 12 Jobs Done</span>
+                            </div>
+                        </div>
+                        <button class="btn btn-outline" style="color: var(--success); border-color: var(--success);">
+                            <i class="fa-solid fa-phone"></i> Call Worker
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+</body>
+</html>

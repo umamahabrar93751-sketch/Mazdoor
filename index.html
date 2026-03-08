@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mazdoor.com - Hire Local Workers Instantly</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Top Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <i class="fa-solid fa-helmet-safety text-primary"></i>
+                <span data-en="Mazdoor.com" data-ur="مزدور ڈاٹ کام">Mazdoor.com</span>
+            </a>
+            
+            <div class="nav-links">
+                <a href="#categories" class="nav-item" data-en="Find Workers" data-ur="مزدور تلاش کریں">Find Workers</a>
+                <a href="#how-it-works" class="nav-item" data-en="Find Jobs" data-ur="کام تلاش کریں">Find Jobs</a>
+            </div>
+
+            <div class="nav-actions">
+                <button id="themeToggle" class="btn btn-outline" title="Toggle Dark/Light Mode" style="padding: 8px 12px;"><i class="fa-solid fa-moon"></i></button>
+                <button id="langToggle" class="btn btn-lang" title="Switch Language"><i class="fa-solid fa-language"></i> <span id="langText">اردو</span></button>
+                <a href="login.html" class="btn btn-outline" data-en="Login" data-ur="لاگ ان">Login</a>
+                <a href="login.html#register" class="btn btn-primary d-none-mobile" data-en="Register" data-ur="رجسٹر کریں">Register</a>
+            </div>
+            
+            <!-- Mobile Menu Toggle -->
+            <button class="mobile-menu-btn" aria-label="Menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-container text-center">
+                <h1 class="hero-title" data-en="Hire Local Workers Instantly" data-ur="مقامی مزدور فوری طور پر حاصل کریں">Hire Local Workers Instantly</h1>
+                <p class="hero-subtitle" data-en="Connect with trusted daily wage workers in your area. Fast, easy, and reliable." data-ur="اپنے علاقے میں قابل اعتماد روزمرہ اجرت والے کارکنوں سے جڑیں۔ تیز، آسان اور قابل اعتماد۔">Connect with trusted daily wage workers in your area. Fast, easy, and reliable.</p>
+                
+                <div class="hero-buttons">
+                    <a href="post-job.html" class="btn btn-massive btn-success">
+                        <i class="fa-solid fa-user-plus icon-large"></i>
+                        <span data-en="Hire a Worker" data-ur="مزدور کی خدمات حاصل کریں">Hire a Worker</span>
+                        <small data-en="Employer / Contractor" data-ur="آجر / ٹھیکیدار">Employer / Contractor</small>
+                    </a>
+                    
+                    <a href="worker-dashboard.html" class="btn btn-massive btn-primary-blue">
+                        <i class="fa-solid fa-briefcase icon-large"></i>
+                        <span data-en="Find Work" data-ur="کام تلاش کریں">Find Work</span>
+                        <small data-en="Mazdoor / Helper" data-ur="مزدور / مددگار">Mazdoor / Helper</small>
+                    </a>
+                </div>
+            </div>
+            
+            <!-- Subtle background decoration -->
+            <div class="hero-bg-shape"></div>
+        </section>
+
+        <!-- Categories Section -->
+        <section id="categories" class="section bg-light">
+            <div class="section-container">
+                <h2 class="section-title text-center" data-en="Find Workers by Job" data-ur="کام کے لحاظ سے مزدور تلاش کریں">Find Workers by Job</h2>
+                
+                <div class="category-grid">
+                    <div class="category-card">
+                        <div class="cat-icon bg-yellow"><i class="fa-solid fa-trowel-bricks"></i></div>
+                        <h3 data-en="Construction Worker" data-ur="تعمیراتی کارکن">Construction Worker</h3>
+                    </div>
+                    
+                    <div class="category-card">
+                        <div class="cat-icon bg-blue"><i class="fa-solid fa-bolt"></i></div>
+                        <h3 data-en="Electrician" data-ur="الیکٹریشن">Electrician</h3>
+                    </div>
+                    
+                    <div class="category-card">
+                        <div class="cat-icon bg-water"><i class="fa-solid fa-faucet-drip"></i></div>
+                        <h3 data-en="Plumber" data-ur="پلمبر">Plumber</h3>
+                    </div>
+                    
+                    <div class="category-card">
+                        <div class="cat-icon bg-green"><i class="fa-solid fa-broom"></i></div>
+                        <h3 data-en="Cleaner" data-ur="صفائی والا">Cleaner</h3>
+                    </div>
+                    
+                    <div class="category-card">
+                        <div class="cat-icon bg-dark"><i class="fa-solid fa-truck-fast"></i></div>
+                        <h3 data-en="Driver" data-ur="ڈرائیور">Driver</h3>
+                    </div>
+                    
+                    <div class="category-card">
+                        <div class="cat-icon bg-orange"><i class="fa-solid fa-hands-holding"></i></div>
+                        <h3 data-en="General Helper" data-ur="مددگار">General Helper</h3>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- How It Works Section -->
+        <section id="how-it-works" class="section">
+            <div class="section-container">
+                <h2 class="section-title text-center" data-en="How It Works" data-ur="یہ کیسے کام کرتا ہے">How It Works</h2>
+                
+                <div class="steps-grid">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <div class="step-icon"><i class="fa-solid fa-file-signature"></i></div>
+                        <h3 data-en="Post a Job" data-ur="ملازمت پوسٹ کریں">Post a Job</h3>
+                        <p data-en="Tell us what you need, location, and wage." data-ur="ہمیں بتائیں کہ آپ کو کیا ضرورت ہے، مقام اور اجرت۔">Tell us what you need, location, and wage.</p>
+                    </div>
+                    
+                    <div class="step-arrow d-none-mobile"><i class="fa-solid fa-arrow-right"></i></div>
+                    
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <div class="step-icon"><i class="fa-solid fa-mobile-screen-button"></i></div>
+                        <h3 data-en="Workers Get Notified" data-ur="مزدوروں کو اطلاع مل جائے گی">Workers Get Notified</h3>
+                        <p data-en="Workers nearby receive an alert instantly." data-ur="قریبی کارکنوں کو فوری طور پر ایک الرٹ موصول ہوتا ہے۔">Workers nearby receive an alert instantly.</p>
+                    </div>
+                    
+                    <div class="step-arrow d-none-mobile"><i class="fa-solid fa-arrow-right"></i></div>
+
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <div class="step-icon"><i class="fa-solid fa-handshake-simple"></i></div>
+                        <h3 data-en="Hire Instantly" data-ur="فوری طور پر ملازمت پر رکھیں">Hire Instantly</h3>
+                        <p data-en="Choose the best worker and complete your job." data-ur="بہترین کارکن کا انتخاب کریں اور اپنا کام مکمل کریں۔">Choose the best worker and complete your job.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Call to Action -->
+        <section class="cta-section text-center">
+            <h2 class="cta-title" data-en="Start Hiring Today" data-ur="آج ہی بھرتی شروع کریں">Start Hiring Today</h2>
+            <a href="post-job.html" class="btn btn-massive btn-success no-subtext">
+                <i class="fa-solid fa-bolt"></i>
+                <span data-en="Post Job Now" data-ur="ابھی ملازمت پوسٹ کریں">Post Job Now</span>
+            </a>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <div class="logo">
+                    <i class="fa-solid fa-helmet-safety"></i>
+                    <span data-en="Mazdoor.com" data-ur="مزدور ڈاٹ کام">Mazdoor.com</span>
+                </div>
+                <p data-en="Connecting daily wage workers with employers in Pakistan." data-ur="پاکستان میں روزمرہ اجرت والے کارکنوں کو آجروں سے جوڑنا۔">Connecting daily wage workers with employers in Pakistan.</p>
+            </div>
+            
+            <div class="footer-links">
+                <h4 data-en="Platform" data-ur="پلیٹ فارم">Platform</h4>
+                <a href="#" data-en="About Us" data-ur="ہمارے بارے میں">About Us</a>
+                <a href="#" data-en="Contact Support" data-ur="ہم سے رابطہ کریں">Contact Support</a>
+                <a href="#" data-en="Privacy Policy" data-ur="رازداری کی پالیسی">Privacy Policy</a>
+                <a href="#" data-en="Terms of Service" data-ur="سروس کی شرائط">Terms of Service</a>
+            </div>
+            
+            <div class="footer-social">
+                <h4 data-en="Follow Us" data-ur="ہمیں فالو کریں">Follow Us</h4>
+                <div class="social-icons">
+                    <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#"><i class="fa-brands fa-whatsapp"></i></a>
+                    <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom text-center">
+            <p data-en="&copy; 2026 Mazdoor.com. All rights reserved." data-ur="&copy; 2026 مزدور ڈاٹ کام. جملہ حقوق محفوظ ہیں۔">&copy; 2026 Mazdoor.com. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
