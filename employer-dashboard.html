@@ -7,41 +7,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
-    <style>
-        .dashboard-layout { display: flex; min-height: 100vh; padding-top: 70px; }
-        
-        .sidebar {
-            width: 250px; background: white; border-right: 1px solid var(--border-color);
-            padding: 24px 0; position: fixed; height: calc(100vh - 70px);
-        }
-        .sidebar a {
-            display: flex; align-items: center; gap: 12px; padding: 16px 24px;
-            color: var(--text-dark); text-decoration: none; font-weight: 500;
-        }
-        .sidebar a:hover, .sidebar a.active { background: var(--bg-light); color: var(--success); border-right: 3px solid var(--success); }
-        .sidebar i { width: 20px; text-align: center; }
-        
-        .main-content { margin-left: 250px; padding: 32px; flex: 1; background: var(--bg-light); }
-        .page-header { margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; }
-        
-        .active-job-card { background: white; padding: 24px; border-radius: var(--radius-md); border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); margin-bottom: 24px; }
-        .job-title { font-size: 1.25rem; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center;}
-        
-        .worker-list { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 20px; }
-        .worker-item { display: flex; justify-content: space-between; align-items: center; padding: 16px; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-light); }
-        .worker-info { display: flex; align-items: center; gap: 16px; }
-        .avatar { width: 48px; height: 48px; border-radius: 50%; background: #CBD5E1; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: white;}
-        
-        @media (max-width: 768px) {
-            .dashboard-layout { flex-direction: column; }
-            .sidebar { width: 100%; position: static; height: auto; border-right: none; overflow-x: auto; white-space: nowrap; padding: 0; }
-            .sidebar a { display: inline-flex; padding: 16px; }
-            .sidebar a.active { border-right: none; border-bottom: 3px solid var(--success); }
-            .main-content { margin-left: 0; padding: 16px; }
-            .worker-item { flex-direction: column; align-items: flex-start; gap: 16px; }
-            .worker-item .btn { width: 100%; }
-        }
-    </style>
 </head>
 <body>
     <nav class="navbar">
@@ -57,61 +22,148 @@
     </nav>
 
     <div class="dashboard-layout">
-        <!-- Sidebar -->
-        <aside class="sidebar">
-            <a href="#" class="active"><i class="fa-solid fa-briefcase"></i> Active Jobs</a>
+        <aside class="sidebar sidebar-employer">
+            <a href="#" class="active" onclick="switchEmployerTab('sec-active', this)"><i class="fa-solid fa-briefcase"></i> Active Jobs</a>
             <a href="post-job.html"><i class="fa-solid fa-plus"></i> Post Job</a>
-            <a href="#"><i class="fa-solid fa-users"></i> Previous Workers</a>
-            <a href="#"><i class="fa-solid fa-building"></i> My Profile</a>
-            <a href="index.html" style="color: var(--danger); margin-top: auto;"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+            <a href="#" onclick="switchEmployerTab('sec-previous', this)"><i class="fa-solid fa-users"></i> Previous Workers</a>
+            <a href="#" onclick="switchEmployerTab('sec-profile', this)"><i class="fa-solid fa-building"></i> My Profile</a>
+            <a href="#" data-action="logout" style="color: var(--danger);"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
         </aside>
 
-        <!-- Main Content -->
         <main class="main-content">
-            <div class="page-header">
-                <h2>Manage Active Jobs</h2>
-            </div>
-
-            <div class="active-job-card">
-                <div class="job-title">
-                    <strong>Construction Helpers Needed (DHA Phase 6)</strong>
-                    <span style="background: #DCFCE7; color: #16A34A; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold;">2/2 Hired - Active</span>
-                </div>
-                <p style="color: var(--text-muted); font-size: 0.9rem;">Posted Today • Rs 1,500/day</p>
-                
-                <h4 style="margin-top: 24px; margin-bottom: 8px;">Workers who accepted:</h4>
-                <div class="worker-list">
-                    <!-- Worker 1 -->
-                    <div class="worker-item">
-                        <div class="worker-info">
-                            <div class="avatar bg-blue"><i class="fa-solid fa-user"></i></div>
-                            <div>
-                                <strong style="display: block;">Ali Raza</strong>
-                                <span style="font-size: 0.9rem; color: var(--text-muted);">⭐ 4.8 | 50+ Jobs Done</span>
-                            </div>
-                        </div>
-                        <button class="btn btn-outline" style="color: var(--success); border-color: var(--success);">
-                            <i class="fa-solid fa-phone"></i> Call Worker
-                        </button>
+            <!-- TAB: ACTIVE JOBS -->
+            <section id="sec-active" class="employer-tab">
+                <div class="page-header" style="display: flex; justify-content: space-between; align-items: center;">
+                    <h2>Manage Active Jobs</h2>
+                    <div style="font-weight: 600; color: var(--text-muted);">
+                        Welcome, <span id="employerWelcomeName" style="color: var(--primary);">Employer</span>!
                     </div>
+                </div>
+
+                <div class="active-job-card">
+                    <div class="job-title">
+                        <strong>Construction Helpers Needed (DHA Phase 6)</strong>
+                        <span class="badge-verified">2/2 Hired - Active</span>
+                    </div>
+                    <p style="font-size: 0.9rem;">Posted Today • Rs 1,500/day</p>
                     
-                    <!-- Worker 2 -->
-                    <div class="worker-item">
-                        <div class="worker-info">
-                            <div class="avatar bg-orange"><i class="fa-solid fa-user"></i></div>
-                            <div>
-                                <strong style="display: block;">Muhammad Usman</strong>
-                                <span style="font-size: 0.9rem; color: var(--text-muted);">⭐ 4.5 | 12 Jobs Done</span>
+                    <h4 style="margin-top: 24px; margin-bottom: 8px;">Workers who accepted:</h4>
+                    <div class="worker-list">
+                        <div class="worker-item">
+                            <div class="worker-info">
+                                <div class="avatar bg-blue"><i class="fa-solid fa-user"></i></div>
+                                <div>
+                                    <strong style="display: block;">Ali Raza</strong>
+                                    <span style="font-size: 0.9rem; color: var(--text-muted);">⭐ 4.8 | 50+ Jobs Done</span>
+                                </div>
                             </div>
+                            <button class="btn btn-outline btn-success-outline" onclick="callWorker('+92 300 1234567')">
+                                <i class="fa-solid fa-phone"></i> Call Worker
+                            </button>
                         </div>
-                        <button class="btn btn-outline" style="color: var(--success); border-color: var(--success);">
-                            <i class="fa-solid fa-phone"></i> Call Worker
-                        </button>
+                        
+                        <div class="worker-item">
+                            <div class="worker-info">
+                                <div class="avatar bg-orange"><i class="fa-solid fa-user"></i></div>
+                                <div>
+                                    <strong style="display: block;">Muhammad Usman</strong>
+                                    <span style="font-size: 0.9rem; color: var(--text-muted);">⭐ 4.5 | 12 Jobs Done</span>
+                                </div>
+                            </div>
+                            <button class="btn btn-outline btn-success-outline" onclick="callWorker('+92 333 9876543')">
+                                <i class="fa-solid fa-phone"></i> Call Worker
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </section>
 
+            <!-- TAB: PREVIOUS WORKERS -->
+            <section id="sec-previous" class="employer-tab" style="display: none;">
+                <div class="page-header"><h2>Previous Workers</h2></div>
+                <div style="text-align: center; padding: 60px 20px; color: var(--text-muted);">
+                    <i class="fa-solid fa-users" style="font-size: 3rem; margin-bottom: 16px; color: var(--border-color);"></i>
+                    <h3 style="margin-bottom: 8px;">No previous workers yet</h3>
+                    <p>Your history of hired workers will appear here.</p>
+                </div>
+            </section>
+
+            <!-- TAB: MY PROFILE -->
+            <section id="sec-profile" class="employer-tab" style="display: none;">
+                <div class="page-header"><h2>My Profile</h2></div>
+
+                <!-- Profile Header -->
+                <div style="background: var(--bg-card); border-radius: var(--radius-lg); border: 1px solid var(--border-color); overflow: hidden; margin-bottom: 24px;">
+                    <div style="background: linear-gradient(135deg, var(--primary), #1D4ED8); padding: 32px; color: white; display: flex; align-items: center; gap: 24px;">
+                        <div style="width: 90px; height: 90px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 2.5rem; border: 3px solid rgba(255,255,255,0.4);">
+                            <i class="fa-solid fa-building"></i>
+                        </div>
+                        <div>
+                            <h2 id="empProfileNameHeader" style="margin-bottom: 4px; font-size: 1.6rem;">Ahmad Construction Co.</h2>
+                            <p style="opacity: 0.9; margin-bottom: 8px;"><i class="fa-solid fa-location-dot"></i> Karachi, Pakistan</p>
+                            <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                                <span class="badge-verified" style="font-size: 0.8rem; background: white; color: var(--success);">Approved Employer</span>
+                                <span style="background: rgba(255,255,255,0.2); padding: 4px 12px; border-radius: 6px; font-size: 0.8rem;">⭐ 4.9 Rating</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); text-align: center; border-top: 1px solid var(--border-color);">
+                        <div style="padding: 20px; border-right: 1px solid var(--border-color);">
+                            <h3 style="color: var(--primary); font-size: 1.5rem; margin-bottom: 4px;">12</h3>
+                            <small style="color: var(--text-muted);">Jobs Posted</small>
+                        </div>
+                        <div style="padding: 20px; border-right: 1px solid var(--border-color);">
+                            <h3 style="color: var(--success); font-size: 1.5rem; margin-bottom: 4px;">45</h3>
+                            <small style="color: var(--text-muted);">Workers Hired</small>
+                        </div>
+                        <div style="padding: 20px;">
+                            <h3 style="color: #F59E0B; font-size: 1.5rem; margin-bottom: 4px;">4.9</h3>
+                            <small style="color: var(--text-muted);">Avg Rating</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profile Details -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+                    <!-- Company Info -->
+                    <div style="background: var(--bg-card); padding: 24px; border-radius: var(--radius-lg); border: 1px solid var(--border-color);">
+                        <h4 style="margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border-color);">
+                            <i class="fa-solid fa-circle-info" style="color: var(--primary);"></i> Company Information
+                        </h4>
+                        <div style="display: flex; flex-direction: column; gap: 14px;">
+                            <div class="flex-between"><span style="color: var(--text-muted); font-size: 0.9rem;">Company Name</span><strong id="empProfileNameFull">Ahmad Construction Co.</strong></div>
+                            <div class="flex-between"><span style="color: var(--text-muted); font-size: 0.9rem;">Email</span><strong id="empProfileEmail">ahmad@example.com</strong></div>
+                            <div class="flex-between"><span style="color: var(--text-muted); font-size: 0.9rem;">Phone</span><strong>+92 300 1234567</strong></div>
+                            <div class="flex-between"><span style="color: var(--text-muted); font-size: 0.9rem;">City</span><strong>Karachi</strong></div>
+                            <div class="flex-between"><span style="color: var(--text-muted); font-size: 0.9rem;">Industry</span><strong>Construction</strong></div>
+                        </div>
+                    </div>
+
+                    <!-- Hiring Stats -->
+                    <div style="background: var(--bg-card); padding: 24px; border-radius: var(--radius-lg); border: 1px solid var(--border-color);">
+                        <h4 style="margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--border-color);">
+                            <i class="fa-solid fa-chart-simple" style="color: var(--success);"></i> Hiring Activity
+                        </h4>
+                        <div style="display: flex; flex-direction: column; gap: 14px;">
+                            <div class="flex-between"><span style="color: var(--text-muted); font-size: 0.9rem;">Active Jobs</span><strong>1</strong></div>
+                            <div class="flex-between"><span style="color: var(--text-muted); font-size: 0.9rem;">Total Spend</span><strong style="color: var(--success);">Rs 145,000</strong></div>
+                            <div class="flex-between"><span style="color: var(--text-muted); font-size: 0.9rem;">Success Rate</span><strong style="color: var(--success);">98%</strong></div>
+                            <div class="flex-between"><span style="color: var(--text-muted); font-size: 0.9rem;">Member Since</span><strong>Jan 2026</strong></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </main>
     </div>
+
+    <script src="script.js"></script>
+    <script>
+        function switchEmployerTab(tabId, element) {
+            document.querySelectorAll('.employer-tab').forEach(tab => tab.style.display = 'none');
+            document.querySelectorAll('.sidebar a').forEach(link => link.classList.remove('active'));
+            document.getElementById(tabId).style.display = 'block';
+            if (element) element.classList.add('active');
+        }
+    </script>
 </body>
 </html>
