@@ -7,39 +7,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
-    <style>
-        .auth-container {
-            display: flex; min-height: 100vh;
-        }
-        .auth-image {
-            flex: 1; background: url('https://images.unsplash.com/photo-1541888086225-f6742548cbca?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80') center/cover;
-            position: relative;
-        }
-        .auth-image::after {
-            content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(37, 99, 235, 0.2), rgba(30, 64, 175, 0.9));
-        }
-        .auth-quote { position: absolute; bottom: 40px; left: 40px; right: 40px; color: white; z-index: 1; }
-        
-        .auth-form-wrapper {
-            flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 40px; max-width: 600px; margin: 0 auto;
-        }
-        
-        .auth-tabs { display: flex; margin-bottom: 32px; border-bottom: 2px solid var(--border-color); }
-        .auth-tab {
-            flex: 1; text-align: center; padding: 16px; cursor: pointer; font-weight: 600; color: var(--text-muted);
-            transition: all 0.2s;
-        }
-        .auth-tab.active { color: var(--primary); border-bottom: 2px solid var(--primary); margin-bottom: -2px; }
-        
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; margin-bottom: 8px; font-weight: 500; }
-        .form-control { width: 100%; padding: 16px; border: 1px solid var(--border-color); border-radius: var(--radius-md); font-size: 1rem; }
-        
-        @media (max-width: 768px) {
-            .auth-image { display: none; }
-            .auth-form-wrapper { padding: 24px; }
-        }
-    </style>
 </head>
 <body>
     <div class="auth-container">
@@ -58,7 +25,7 @@
         <!-- Form Side -->
         <div class="auth-form-wrapper">
             <h2 style="margin-bottom: 8px;">Welcome Back!</h2>
-            <p style="color: var(--text-muted); margin-bottom: 32px;">Please sign in to access your account dashboard.</p>
+            <p style="margin-bottom: 32px;">Please sign in to access your account dashboard.</p>
             
             <div class="auth-tabs">
                 <div class="auth-tab active" id="tabLogin" onclick="switchTab('login')">Login</div>
@@ -68,32 +35,32 @@
             <!-- Login Form -->
             <form id="loginForm" onsubmit="handleLogin(event)">
                 <div class="form-group">
-                    <label>Phone Number or Email</label>
-                    <input type="text" id="loginInput" class="form-control" placeholder="03XX-XXXXXXX" required>
+                    <label>Email</label>
+                    <input type="text" id="loginInput" class="form-control" placeholder="user@example.com" required>
                 </div>
                 
                 <div class="form-group">
                     <label>Password</label>
-                    <input type="password" class="form-control" placeholder="••••••••" required>
+                    <input type="password" id="loginPassword" class="form-control" placeholder="••••••••" required>
                 </div>
                 
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                <div class="flex-between" style="margin-bottom: 24px;">
                     <label style="display: flex; align-items: center; gap: 8px; font-size: 0.9rem; font-weight: 400;">
                         <input type="checkbox"> Remember me
                     </label>
                     <a href="#" style="color: var(--primary); text-decoration: none; font-size: 0.9rem; font-weight: 500;">Forgot Password?</a>
                 </div>
                 
-                <button type="submit" class="btn btn-primary" style="width: 100%; padding: 16px; font-size: 1.1rem; border-radius: var(--radius-md);">
+                <button type="submit" class="btn btn-primary btn-block">
                     Login Securely
                 </button>
             </form>
 
             <!-- Register Form (Hidden by default) -->
-            <form id="registerForm" style="display: none;" onsubmit="event.preventDefault(); alert('Registration successful! Please login.'); switchTab('login');">
+            <form id="registerForm" style="display: none;" onsubmit="handleRegister(event)">
                 <div class="form-group">
                     <label>I am a...</label>
-                    <select class="form-control" required style="font-weight: 600;">
+                    <select id="regRole" class="form-control" required style="font-weight: 600;">
                         <option value="worker">👷 Worker (Looking for jobs)</option>
                         <option value="employer">🏢 Employer (Looking to hire)</option>
                     </select>
@@ -101,20 +68,20 @@
 
                 <div class="form-group">
                     <label>Full Name</label>
-                    <input type="text" class="form-control" placeholder="e.g. Ali Raza" required>
+                    <input type="text" id="regName" class="form-control" placeholder="e.g. Ali Raza" required>
                 </div>
 
                 <div class="form-group">
-                    <label>Phone Number</label>
-                    <input type="text" class="form-control" placeholder="03XX-XXXXXXX" required>
+                    <label>Email</label>
+                    <input type="email" id="regEmail" class="form-control" placeholder="user@example.com" required>
                 </div>
                 
                 <div class="form-group">
                     <label>Create Password</label>
-                    <input type="password" class="form-control" placeholder="••••••••" required>
+                    <input type="password" id="regPassword" class="form-control" placeholder="••••••••" required>
                 </div>
                 
-                <button type="submit" class="btn btn-primary" style="width: 100%; padding: 16px; font-size: 1.1rem; border-radius: var(--radius-md); margin-top: 12px;">
+                <button type="submit" class="btn btn-primary btn-block" style="margin-top: 12px;">
                     Create Account
                 </button>
             </form>
@@ -130,7 +97,6 @@
 
     <script>
         window.onload = function() {
-            // Check if the URL has #register in it
             if (window.location.hash === '#register') {
                 switchTab('register');
             }
@@ -142,32 +108,113 @@
             const tabLogin = document.getElementById('tabLogin');
             const tabRegister = document.getElementById('tabRegister');
 
-            if (tab === 'login') {
-                loginForm.style.display = 'block';
-                registerForm.style.display = 'none';
-                tabLogin.classList.add('active');
-                tabRegister.classList.remove('active');
-            } else {
-                loginForm.style.display = 'none';
-                registerForm.style.display = 'block';
-                tabRegister.classList.add('active');
-                tabLogin.classList.remove('active');
+            const isLogin = tab === 'login';
+            loginForm.style.display = isLogin ? 'block' : 'none';
+            registerForm.style.display = isLogin ? 'none' : 'block';
+            tabLogin.classList.toggle('active', isLogin);
+            tabRegister.classList.toggle('active', !isLogin);
+        }
+
+        async function handleLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('loginInput').value.toLowerCase().trim();
+            const password = document.getElementById('loginPassword').value;
+            
+            // Keep demo routes
+            if (email === 'admin') {
+                localStorage.setItem('currentUser', JSON.stringify({ id: 0, name: 'Demo Admin', email: 'admin@mazdoor.com', role: 'admin' }));
+                localStorage.setItem('currentUserName', 'Demo Admin');
+                localStorage.setItem('currentRole', 'admin');
+                return window.location.href = 'admin-panel.html';
+            }
+            if (email === 'employer') {
+                localStorage.setItem('currentUser', JSON.stringify({ id: 0, name: 'Demo Employer', email: 'employer@mazdoor.com', role: 'employer' }));
+                localStorage.setItem('currentUserName', 'Demo Employer');
+                localStorage.setItem('currentRole', 'employer');
+                return window.location.href = 'employer-dashboard.html';
+            }
+            if (email === 'worker') {
+                localStorage.setItem('currentUser', JSON.stringify({ id: 0, name: 'Demo Worker', email: 'worker@mazdoor.com', role: 'worker' }));
+                localStorage.setItem('currentUserName', 'Demo Worker');
+                localStorage.setItem('currentWorker', 'Demo Worker');
+                localStorage.setItem('currentRole', 'worker');
+                return window.location.href = 'worker-dashboard.html';
+            }
+
+            // Real backend login (trying both roles for simplicity since login form doesn't ask for role)
+            try {
+                let res = await fetch('http://localhost:3000/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password, role: 'worker' })
+                });
+                
+                if (!res.ok) {
+                    res = await fetch('http://localhost:3000/api/auth/login', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email, password, role: 'employer' })
+                    });
+                }
+
+                if (!res.ok) {
+                    res = await fetch('http://localhost:3000/api/auth/login', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email, password, role: 'admin' })
+                    });
+                }
+
+                if (res.ok) {
+                    const user = await res.json();
+                    localStorage.setItem('currentUser', JSON.stringify(user));
+                    localStorage.setItem('currentUserName', user.name);
+                    localStorage.setItem('currentRole', user.role);
+                    
+                    if(user.role === 'worker') {
+                        localStorage.setItem('currentWorker', user.name);
+                        window.location.href = 'worker-dashboard.html';
+                    } else if (user.role === 'employer') {
+                        window.location.href = 'employer-dashboard.html';
+                    } else {
+                        window.location.href = 'admin-panel.html';
+                    }
+                } else {
+                    alert('Invalid credentials');
+                }
+            } catch (e) {
+                console.error(e);
+                alert('Server error or not running');
             }
         }
 
-        function handleLogin(event) {
+        async function handleRegister(event) {
             event.preventDefault();
-            const userInput = document.getElementById('loginInput').value.toLowerCase().trim();
-            
-            if (userInput === 'admin') {
-                window.location.href = 'admin-panel.html';
-            } else if (userInput === 'employer') {
-                window.location.href = 'employer-dashboard.html';
-            } else {
-                // Default fallback for any other input (like a phone number) goes to worker dashboard
-                window.location.href = 'worker-dashboard.html';
+            const role = document.getElementById('regRole').value;
+            const name = document.getElementById('regName').value;
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+
+            try {
+                const res = await fetch('http://localhost:3000/api/auth/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, password, role })
+                });
+
+                if (res.ok) {
+                    alert('Registration successful! Please login.');
+                    switchTab('login');
+                } else {
+                    const err = await res.json();
+                    alert(err.error || 'Registration failed');
+                }
+            } catch(e) {
+                console.error(e);
+                alert("Cannot connect to server.");
             }
         }
     </script>
 </body>
 </html>
+
