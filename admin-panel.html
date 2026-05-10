@@ -8,67 +8,28 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
     <style>
+        /* Admin-only overrides that don't belong in shared CSS */
         body { background: #F1F5F9; }
-        .dashboard-layout { display: flex; min-height: 100vh; padding-top: 70px; }
-        
-        .sidebar {
-            width: 250px; background: #1E293B; border-right: none; color: white;
-            padding: 24px 0; position: fixed; height: calc(100vh - 70px);
-        }
-        .sidebar a {
-            display: flex; align-items: center; gap: 12px; padding: 16px 24px;
-            color: #CBD5E1; text-decoration: none; font-weight: 500;
-        }
-        .sidebar a:hover, .sidebar a.active { background: #0F172A; color: white; border-right: 3px solid var(--primary); }
-        .sidebar i { width: 20px; text-align: center; }
-        
-        .main-content { margin-left: 250px; padding: 32px; flex: 1; }
-        .page-header { margin-bottom: 32px; display: flex; justify-content: space-between; align-items: center; }
-        
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; margin-bottom: 32px; }
-        .stat-card {
-            background: white; padding: 24px; border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-sm); display: flex; align-items: center; gap: 20px;
-        }
-        .stat-icon { width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; color: white; }
-        .stat-info span { color: var(--text-muted); font-size: 0.9rem; font-weight: 500; text-transform: uppercase; }
-        .stat-info h3 { font-size: 2rem; margin: 4px 0 0 0; }
-        
-        table { width: 100%; border-collapse: collapse; background: white; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm); }
-        th, td { padding: 16px; text-align: left; border-bottom: 1px solid var(--border-color); }
-        th { background: #F8FAFC; color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 0.85rem; }
-        tr:last-child td { border-bottom: none; }
-        
-        .badge-verified { background: #DCFCE7; color: #16A34A; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; }
-        .badge-pending { background: #FEF3C7; color: #D97706; padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; }
-        
-        @media (max-width: 768px) {
-            .dashboard-layout { flex-direction: column; }
-            .sidebar { width: 100%; position: static; height: auto; overflow-x: auto; white-space: nowrap; padding: 0; }
-            .sidebar a { display: inline-flex; padding: 16px; border-right: none; }
-            .sidebar a.active { border-right: none; border-bottom: 3px solid var(--primary); }
-            .main-content { margin-left: 0; padding: 16px; }
-            .stats-grid { grid-template-columns: 1fr; }
-            table { display: block; overflow-x: auto; white-space: nowrap; }
-        }
+        .navbar-admin { border-bottom: 1px solid #334155; background: #0F172A; }
+        .navbar-admin .logo { color: white; }
     </style>
+    <script src="script.js" defer></script>
 </head>
 <body>
-    <nav class="navbar" style="border-bottom: 1px solid #334155; background: #0F172A;">
+    <nav class="navbar navbar-admin">
         <div class="nav-container">
-            <a href="index.html" class="logo" style="color: white;">
+            <a href="index.html" class="logo">
                 <i class="fa-solid fa-helmet-safety text-primary"></i>
-                <span>Mazdoor.com Admin</span>
+                <span>Mazdoor.com</span>
             </a>
             <div class="nav-actions">
-                <span style="color: white; margin-right: 16px;">Admin Panel</span>
+                <span style="color: white;">Admin Panel</span>
             </div>
         </div>
     </nav>
 
     <div class="dashboard-layout">
-        <!-- Sidebar -->
-        <aside class="sidebar">
+        <aside class="sidebar sidebar-admin">
             <a href="#" class="active" onclick="switchAdminTab('sec-overview', this)"><i class="fa-solid fa-chart-line"></i> Dashboard Overview</a>
             <a href="#" onclick="switchAdminTab('sec-workers', this)"><i class="fa-solid fa-users-gear"></i> Manage Workers</a>
             <a href="#" onclick="switchAdminTab('sec-employers', this)"><i class="fa-solid fa-building-user"></i> Manage Employers</a>
@@ -76,10 +37,11 @@
             <a href="#" onclick="switchAdminTab('sec-ratings', this)"><i class="fa-solid fa-star"></i> Ratings & Reviews</a>
             <a href="#" onclick="switchAdminTab('sec-reports', this)"><i class="fa-solid fa-triangle-exclamation"></i> Reports & Complaints</a>
             <a href="#" onclick="switchAdminTab('sec-analytics', this)"><i class="fa-solid fa-chart-pie"></i> Analytics</a>
+            <a href="#" onclick="switchAdminTab('sec-verifications', this)"><i class="fa-solid fa-user-check"></i> Verification Requests</a>
             <a href="#" onclick="switchAdminTab('sec-settings', this)"><i class="fa-solid fa-gear"></i> Settings</a>
+            <a href="#" data-action="logout" style="color: #F87171; margin-top: auto;"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
         </aside>
 
-        <!-- Main Content -->
         <main class="main-content">
             <div class="page-header">
                 <h2>Platform Administration</h2>
@@ -91,75 +53,46 @@
                 <div class="stats-grid">
                     <div class="stat-card">
                         <div class="stat-icon bg-blue"><i class="fa-solid fa-users"></i></div>
-                        <div class="stat-info">
-                            <span>Total Workers</span>
-                            <h3>10,482</h3>
-                        </div>
+                        <div class="stat-info"><span>Total Workers</span><h3>10,482</h3></div>
                     </div>
-                    
                     <div class="stat-card">
                         <div class="stat-icon bg-green"><i class="fa-solid fa-building"></i></div>
-                        <div class="stat-info">
-                            <span>Employers</span>
-                            <h3>5,123</h3>
-                        </div>
+                        <div class="stat-info"><span>Employers</span><h3>5,123</h3></div>
                     </div>
-                    
                     <div class="stat-card">
                         <div class="stat-icon bg-dark"><i class="fa-solid fa-briefcase"></i></div>
-                        <div class="stat-info">
-                            <span>Total Jobs Posted</span>
-                            <h3>15,204</h3>
-                        </div>
+                        <div class="stat-info"><span>Total Jobs Posted</span><h3>15,204</h3></div>
                     </div>
-
                     <div class="stat-card">
                         <div class="stat-icon bg-orange"><i class="fa-solid fa-spinner"></i></div>
-                        <div class="stat-info">
-                            <span>Active Jobs</span>
-                            <h3>342</h3>
-                        </div>
+                        <div class="stat-info"><span>Active Jobs</span><h3>342</h3></div>
                     </div>
-
                     <div class="stat-card">
                         <div class="stat-icon bg-water"><i class="fa-solid fa-circle-check"></i></div>
-                        <div class="stat-info">
-                            <span>Completed Jobs</span>
-                            <h3>14,862</h3>
-                        </div>
+                        <div class="stat-info"><span>Completed Jobs</span><h3>14,862</h3></div>
                     </div>
-
                     <div class="stat-card">
                         <div class="stat-icon bg-yellow"><i class="fa-solid fa-user-plus"></i></div>
-                        <div class="stat-info">
-                            <span>New Registrations (ID)</span>
-                            <h3>+45</h3>
-                        </div>
+                        <div class="stat-info"><span>New Registrations (ID)</span><h3>+45</h3></div>
                     </div>
                 </div>
 
                 <div style="background: white; padding: 24px; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); margin-top: 32px; text-align: center;">
                     <i class="fa-solid fa-arrow-pointer" style="font-size: 3rem; color: var(--border-color); margin-bottom: 16px;"></i>
-                    <h3 style="margin-bottom: 8px;">Welcome to the Control Center</h3>
-                    <p style="color: var(--text-muted);">Use the sidebar links to navigate and manage platform operations spanning workers, employers, active jobs, and community moderation.</p>
+                    <h3 id="adminWelcomeName" style="margin-bottom: 8px;">Welcome to the Control Center</h3>
+                    <p>Use the sidebar links to navigate and manage platform operations spanning workers, employers, active jobs, and community moderation.</p>
                 </div>
             </section>
 
             <!-- TAB: WORKERS -->
             <section id="sec-workers" class="admin-tab" style="display: none;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                    <h3 style="margin: 0;">Worker Database (Recent)</h3>
-                    <button class="btn btn-primary" style="padding: 6px 12px; font-size: 0.85rem;" onclick="let name = prompt('Enter new worker name:'); if(name) alert(name + ' added to database.');"><i class="fa-solid fa-plus"></i> Manual Add</button>
+                <div class="flex-between" style="margin-bottom: 16px;">
+                    <h3>Worker Database (Recent)</h3>
+                    <button class="btn btn-primary btn-sm" onclick="let name = prompt('Enter new worker name:'); if(name) alert(name + ' added to database.');"><i class="fa-solid fa-plus"></i> Manual Add</button>
                 </div>
                 <table>
                     <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Skill</th>
-                            <th>Location</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
+                        <tr><th>Name</th><th>Skill</th><th>Location</th><th>Status</th><th>Action</th></tr>
                     </thead>
                     <tbody>
                         <tr>
@@ -168,8 +101,8 @@
                             <td>Lahore</td>
                             <td><span class="badge-pending">Pending CNIC</span></td>
                             <td>
-                                <button class="btn btn-outline" style="padding: 4px 8px; font-size: 0.8rem; margin-right: 4px;" onclick="alert('Worker verified successfully.'); this.closest('tr').querySelector('.badge-pending').className='badge-verified'; this.closest('tr').querySelector('.badge-verified').innerText='Verified';">Verify</button>
-                                <button class="btn btn-outline" style="padding: 4px 8px; font-size: 0.8rem; color: var(--danger); border-color: var(--danger);" onclick="if(confirm('Suspend this worker?')) this.closest('tr').remove();">Suspend</button>
+                                <button class="btn btn-outline btn-sm" style="margin-right: 4px;" onclick="alert('Worker verified successfully.'); this.closest('tr').querySelector('.badge-pending').className='badge-verified'; this.closest('tr').querySelector('.badge-verified').innerText='Verified';">Verify</button>
+                                <button class="btn btn-outline btn-sm btn-danger-outline" onclick="if(confirm('Suspend this worker?')) this.closest('tr').remove();">Suspend</button>
                             </td>
                         </tr>
                         <tr>
@@ -178,8 +111,8 @@
                             <td>Karachi</td>
                             <td><span class="badge-verified">Verified</span></td>
                             <td>
-                                <button class="btn btn-outline" style="padding: 4px 8px; font-size: 0.8rem; margin-right: 4px;" onclick="prompt('Edit name:', 'Zain Ahmed');">Edit</button>
-                                <button class="btn btn-outline" style="padding: 4px 8px; font-size: 0.8rem; color: var(--danger); border-color: var(--danger);" onclick="if(confirm('Delete user?')) this.closest('tr').remove();">Delete</button>
+                                <button class="btn btn-outline btn-sm" style="margin-right: 4px;" onclick="prompt('Edit name:', 'Zain Ahmed');">Edit</button>
+                                <button class="btn btn-outline btn-sm btn-danger-outline" onclick="if(confirm('Delete user?')) this.closest('tr').remove();">Delete</button>
                             </td>
                         </tr>
                     </tbody>
@@ -188,19 +121,13 @@
 
             <!-- TAB: EMPLOYERS -->
             <section id="sec-employers" class="admin-tab" style="display: none;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                    <h3 style="margin: 0;">Employer Roster</h3>
-                    <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.85rem;" onclick="prompt('Filter employers by industry/status:');"><i class="fa-solid fa-filter"></i> Filter</button>
+                <div class="flex-between" style="margin-bottom: 16px;">
+                    <h3>Employer Roster</h3>
+                    <button class="btn btn-outline btn-sm" onclick="prompt('Filter employers by industry/status:');"><i class="fa-solid fa-filter"></i> Filter</button>
                 </div>
                 <table>
                     <thead>
-                        <tr>
-                            <th>Employer Name</th>
-                            <th>Type</th>
-                            <th>Jobs Posted</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
+                        <tr><th>Employer Name</th><th>Type</th><th>Jobs Posted</th><th>Status</th><th>Action</th></tr>
                     </thead>
                     <tbody>
                         <tr>
@@ -209,8 +136,8 @@
                             <td>12</td>
                             <td><span class="badge-verified">Approved</span></td>
                             <td>
-                                <button class="btn btn-outline" style="padding: 4px 8px; font-size: 0.8rem; margin-right: 4px;" onclick="alert('Loading employer details...');">Edit Details</button>
-                                <button class="btn btn-outline" style="padding: 4px 8px; font-size: 0.8rem; color: var(--danger); border-color: var(--danger);" onclick="if(confirm('Block Ahmad Construction Co.?')) this.closest('tr').remove();">Block</button>
+                                <button class="btn btn-outline btn-sm" style="margin-right: 4px;" onclick="alert('Loading employer details...');">Edit Details</button>
+                                <button class="btn btn-outline btn-sm btn-danger-outline" onclick="if(confirm('Block Ahmad Construction Co.?')) this.closest('tr').remove();">Block</button>
                             </td>
                         </tr>
                         <tr>
@@ -219,8 +146,8 @@
                             <td>2</td>
                             <td><span class="badge-pending">Reviewing</span></td>
                             <td>
-                                <button class="btn btn-outline" style="padding: 4px 8px; font-size: 0.8rem; margin-right: 4px;" onclick="alert('Employer approved!');">Approve</button>
-                                <button class="btn btn-outline" style="padding: 4px 8px; font-size: 0.8rem; color: var(--danger); border-color: var(--danger);" onclick="if(confirm('Block Sajid Khan?')) this.closest('tr').remove();">Block</button>
+                                <button class="btn btn-outline btn-sm" style="margin-right: 4px;" onclick="alert('Employer approved!');">Approve</button>
+                                <button class="btn btn-outline btn-sm btn-danger-outline" onclick="if(confirm('Block Sajid Khan?')) this.closest('tr').remove();">Block</button>
                             </td>
                         </tr>
                     </tbody>
@@ -229,19 +156,13 @@
 
             <!-- TAB: JOBS -->
             <section id="sec-jobs" class="admin-tab" style="display: none;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                    <h3 style="margin: 0;">Active Job Marketplace</h3>
-                    <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.85rem;" onclick="if(confirm('Are you sure you want to remove all old jobs?')) document.querySelector('#sec-jobs tbody').innerHTML = '';"><i class="fa-solid fa-ban"></i> Bulk Remove</button>
+                <div class="flex-between" style="margin-bottom: 16px;">
+                    <h3>Active Job Marketplace</h3>
+                    <button class="btn btn-outline btn-sm" onclick="if(confirm('Are you sure you want to remove all old jobs?')) document.querySelector('#sec-jobs tbody').innerHTML = '';"><i class="fa-solid fa-ban"></i> Bulk Remove</button>
                 </div>
                 <table>
                     <thead>
-                        <tr>
-                            <th>Job Title</th>
-                            <th>Location</th>
-                            <th>Wage</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
+                        <tr><th>Job Title</th><th>Location</th><th>Wage</th><th>Status</th><th>Action</th></tr>
                     </thead>
                     <tbody>
                         <tr>
@@ -250,8 +171,8 @@
                             <td>Rs 1500 / day</td>
                             <td><span class="badge-pending">Open (0/2)</span></td>
                             <td>
-                                <button class="btn btn-outline" style="padding: 4px 8px; font-size: 0.8rem; margin-right: 4px;" onclick="alert('Viewing job details...');">View</button>
-                                <button class="btn btn-outline" style="padding: 4px 8px; font-size: 0.8rem; color: var(--danger); border-color: var(--danger);" onclick="if(confirm('Delete this job?')) this.closest('tr').remove();">Delete</button>
+                                <button class="btn btn-outline btn-sm" style="margin-right: 4px;" onclick="alert('Viewing job details...');">View</button>
+                                <button class="btn btn-outline btn-sm btn-danger-outline" onclick="if(confirm('Delete this job?')) this.closest('tr').remove();">Delete</button>
                             </td>
                         </tr>
                         <tr>
@@ -260,8 +181,8 @@
                             <td>Rs 2500 / job</td>
                             <td><span class="badge-verified">Filled (1/1)</span></td>
                             <td>
-                                <button class="btn btn-outline" style="padding: 4px 8px; font-size: 0.8rem; margin-right: 4px;" onclick="alert('Viewing job details...');">View</button>
-                                <button class="btn btn-outline" style="padding: 4px 8px; font-size: 0.8rem; color: var(--danger); border-color: var(--danger);" onclick="if(confirm('Delete this job?')) this.closest('tr').remove();">Delete</button>
+                                <button class="btn btn-outline btn-sm" style="margin-right: 4px;" onclick="alert('Viewing job details...');">View</button>
+                                <button class="btn btn-outline btn-sm btn-danger-outline" onclick="if(confirm('Delete this job?')) this.closest('tr').remove();">Delete</button>
                             </td>
                         </tr>
                     </tbody>
@@ -270,22 +191,16 @@
 
             <!-- TAB: RATINGS -->
             <section id="sec-ratings" class="admin-tab" style="display: none;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                    <h3 style="margin: 0;">Recent Platform Reviews</h3>
+                <div class="flex-between" style="margin-bottom: 16px;">
+                    <h3>Recent Platform Reviews</h3>
                     <div style="display: flex; gap: 8px;">
                         <input type="text" placeholder="Search by name..." style="padding: 6px 12px; border: 1px solid var(--border-color); border-radius: 4px;">
-                        <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.85rem;" onclick="prompt('Enter minimum stars (1-5):');"><i class="fa-solid fa-filter"></i> Filter</button>
+                        <button class="btn btn-outline btn-sm" onclick="prompt('Enter minimum stars (1-5):');"><i class="fa-solid fa-filter"></i> Filter</button>
                     </div>
                 </div>
                 <table>
                     <thead>
-                        <tr>
-                            <th>Review Context</th>
-                            <th>Rating</th>
-                            <th>Comment</th>
-                            <th>Date</th>
-                            <th>Action</th>
-                        </tr>
+                        <tr><th>Review Context</th><th>Rating</th><th>Comment</th><th>Date</th><th>Action</th></tr>
                     </thead>
                     <tbody>
                         <tr>
@@ -300,8 +215,8 @@
                             <td style="max-width: 250px; white-space: normal;">"Great work wiring the new room. Arrived on time and cleaned up afterwards."</td>
                             <td><small>Oct 23, 2026</small></td>
                             <td style="min-width: 140px;">
-                                <button class="btn btn-outline" style="padding: 4px 8px; font-size: 0.8rem; margin-right: 4px; color: var(--success); border-color: var(--success);" onclick="alert('Review approved and kept visible.')"><i class="fa-solid fa-check"></i></button>
-                                <button class="btn btn-outline" style="padding: 4px 8px; font-size: 0.8rem; color: var(--danger); border-color: var(--danger);" onclick="if(confirm('Are you sure you want to delete this review?')) this.closest('tr').remove();"><i class="fa-solid fa-trash"></i></button>
+                                <button class="btn btn-outline btn-sm btn-success-outline" style="margin-right: 4px;" onclick="alert('Review approved and kept visible.')"><i class="fa-solid fa-check"></i></button>
+                                <button class="btn btn-outline btn-sm btn-danger-outline" onclick="if(confirm('Are you sure you want to delete this review?')) this.closest('tr').remove();"><i class="fa-solid fa-trash"></i></button>
                             </td>
                         </tr>
                         <tr>
@@ -316,8 +231,8 @@
                             <td style="max-width: 250px; white-space: normal;">"Did not pay me the agreed wage. Deducted Rs 500 for no reason." <span class="badge-pending" style="display: inline-block; margin-top: 4px;">Flagged</span></td>
                             <td><small>Oct 22, 2026</small></td>
                             <td style="min-width: 140px;">
-                                <button class="btn btn-outline" style="padding: 4px 8px; font-size: 0.8rem; margin-right: 4px;" onclick="switchAdminTab('sec-reports', document.querySelectorAll('.sidebar a')[5])">Investigate</button>
-                                <button class="btn btn-outline" style="padding: 4px 8px; font-size: 0.8rem; color: var(--danger); border-color: var(--danger);" onclick="if(confirm('Delete fake/abusive review?')) this.closest('tr').remove();"><i class="fa-solid fa-trash"></i></button>
+                                <button class="btn btn-outline btn-sm" style="margin-right: 4px;" onclick="switchAdminTab('sec-reports', document.querySelectorAll('.sidebar a')[5])">Investigate</button>
+                                <button class="btn btn-outline btn-sm btn-danger-outline" onclick="if(confirm('Delete fake/abusive review?')) this.closest('tr').remove();"><i class="fa-solid fa-trash"></i></button>
                             </td>
                         </tr>
                     </tbody>
@@ -326,21 +241,13 @@
 
             <!-- TAB: REPORTS & DISPUTES -->
             <section id="sec-reports" class="admin-tab" style="display: none;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                    <h3 style="margin: 0;">Dispute Resolution & Reports</h3>
-                    <div style="display: flex; gap: 8px;">
-                        <button class="btn btn-outline" style="padding: 6px 12px; font-size: 0.85rem;" onclick="alert('Loading archived resolutions...');">View Resolved</button>
-                    </div>
+                <div class="flex-between" style="margin-bottom: 16px;">
+                    <h3>Dispute Resolution & Reports</h3>
+                    <button class="btn btn-outline btn-sm" onclick="alert('Loading archived resolutions...');">View Resolved</button>
                 </div>
                 <table>
                     <thead>
-                        <tr>
-                            <th>Reported User</th>
-                            <th>Reported By</th>
-                            <th>Reason / Category</th>
-                            <th>Status</th>
-                            <th>Action</th>
-                        </tr>
+                        <tr><th>Reported User</th><th>Reported By</th><th>Reason / Category</th><th>Status</th><th>Action</th></tr>
                     </thead>
                     <tbody>
                         <tr>
@@ -348,18 +255,15 @@
                                 <strong style="color: var(--danger);">Ahmad Construction Co.</strong><br>
                                 <small style="color: var(--text-muted);">Employer Profile</small>
                             </td>
-                            <td>
-                                Zain Ahmed<br>
-                                <small style="color: var(--text-muted);">Worker</small>
-                            </td>
+                            <td>Zain Ahmed<br><small style="color: var(--text-muted);">Worker</small></td>
                             <td>
                                 <strong>Non-payment</strong><br>
                                 <small style="color: var(--text-muted);">"Company refused to pay remaining 50% after work completion."</small>
                             </td>
                             <td><span class="badge-pending" style="background: #FEE2E2; color: #DC2626;">Urgent</span></td>
                             <td style="min-width: 150px;">
-                                <button class="btn btn-outline" style="padding: 4px 8px; font-size: 0.8rem; margin-right: 4px;" onclick="prompt('Type message to send to both parties:');">Contact Both</button>
-                                <button class="btn btn-outline" style="padding: 4px 8px; font-size: 0.8rem; color: var(--danger); border-color: var(--danger);" onclick="if(confirm('Suspend employer?')) this.closest('tr').remove();">Suspend Employer</button>
+                                <button class="btn btn-outline btn-sm" style="margin-right: 4px;" onclick="prompt('Type message to send to both parties:');">Contact Both</button>
+                                <button class="btn btn-outline btn-sm btn-danger-outline" onclick="if(confirm('Suspend employer?')) this.closest('tr').remove();">Suspend Employer</button>
                             </td>
                         </tr>
                         <tr>
@@ -367,18 +271,15 @@
                                 <strong style="color: var(--danger);">Kamran Ali</strong><br>
                                 <small style="color: var(--text-muted);">Worker Profile</small>
                             </td>
-                            <td>
-                                Sajid Khan<br>
-                                <small style="color: var(--text-muted);">Employer</small>
-                            </td>
+                            <td>Sajid Khan<br><small style="color: var(--text-muted);">Employer</small></td>
                             <td>
                                 <strong>No Show</strong><br>
                                 <small style="color: var(--text-muted);">"Worker accepted job but never arrived or picked up phone."</small>
                             </td>
                             <td><span class="badge-pending">Investigating</span></td>
                             <td style="min-width: 150px;">
-                                <button class="btn btn-outline" style="padding: 4px 8px; font-size: 0.8rem; margin-right: 4px;" onclick="alert('Warning issued.');">Issue Warning</button>
-                                <button class="btn btn-outline" style="padding: 4px 8px; font-size: 0.8rem; color: var(--success); border-color: var(--success);" onclick="this.closest('tr').remove(); alert('Report dismissed.');">Dismiss</button>
+                                <button class="btn btn-outline btn-sm" style="margin-right: 4px;" onclick="alert('Warning issued.');">Issue Warning</button>
+                                <button class="btn btn-outline btn-sm btn-success-outline" onclick="this.closest('tr').remove(); alert('Report dismissed.');">Dismiss</button>
                             </td>
                         </tr>
                     </tbody>
@@ -387,8 +288,8 @@
 
             <!-- TAB: ANALYTICS -->
             <section id="sec-analytics" class="admin-tab" style="display: none;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
-                    <h3 style="margin: 0;">Platform Analytics & Trends</h3>
+                <div class="flex-between" style="margin-bottom: 24px;">
+                    <h3>Platform Analytics & Trends</h3>
                     <select style="padding: 6px 12px; border: 1px solid var(--border-color); border-radius: 4px;">
                         <option>Last 30 Days</option>
                         <option>Last 7 Days</option>
@@ -402,27 +303,19 @@
                         <h4 style="margin-bottom: 16px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">Top Cities by Activity</h4>
                         
                         <div style="margin-bottom: 12px;">
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
-                                <strong>Lahore</strong> <span>4,201 jobs</span>
-                            </div>
+                            <div class="flex-between" style="margin-bottom: 4px;"><strong>Lahore</strong> <span>4,201 jobs</span></div>
                             <div style="width: 100%; background: var(--bg-light); border-radius: 4px; height: 8px; overflow: hidden;">
                                 <div style="width: 85%; background: var(--primary); height: 100%;"></div>
                             </div>
                         </div>
-                        
                         <div style="margin-bottom: 12px;">
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
-                                <strong>Karachi</strong> <span>3,842 jobs</span>
-                            </div>
+                            <div class="flex-between" style="margin-bottom: 4px;"><strong>Karachi</strong> <span>3,842 jobs</span></div>
                             <div style="width: 100%; background: var(--bg-light); border-radius: 4px; height: 8px; overflow: hidden;">
                                 <div style="width: 70%; background: #0EA5E9; height: 100%;"></div>
                             </div>
                         </div>
-
                         <div style="margin-bottom: 12px;">
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
-                                <strong>Islamabad</strong> <span>1,902 jobs</span>
-                            </div>
+                            <div class="flex-between" style="margin-bottom: 4px;"><strong>Islamabad</strong> <span>1,902 jobs</span></div>
                             <div style="width: 100%; background: var(--bg-light); border-radius: 4px; height: 8px; overflow: hidden;">
                                 <div style="width: 45%; background: #10B981; height: 100%;"></div>
                             </div>
@@ -433,40 +326,50 @@
                     <div style="background: white; padding: 24px; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm);">
                         <h4 style="margin-bottom: 16px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">Most Demanded Skills</h4>
                         
-                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+                        <div class="flex-between" style="margin-bottom: 16px;">
                             <div style="display: flex; align-items: center; gap: 12px;">
                                 <div style="width: 40px; height: 40px; border-radius: 50%; background: #FEF3C7; color: #D97706; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;"><i class="fa-solid fa-trowel-bricks"></i></div>
-                                <div>
-                                    <h4 style="margin: 0;">Construction</h4>
-                                    <small style="color: var(--text-muted);">45% of total jobs</small>
-                                </div>
+                                <div><h4 style="margin: 0;">Construction</h4><small style="color: var(--text-muted);">45% of total jobs</small></div>
                             </div>
                             <strong style="color: var(--success);"><i class="fa-solid fa-arrow-trend-up"></i> +12%</strong>
                         </div>
-
-                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+                        <div class="flex-between" style="margin-bottom: 16px;">
                             <div style="display: flex; align-items: center; gap: 12px;">
                                 <div style="width: 40px; height: 40px; border-radius: 50%; background: #DBEAFE; color: #2563EB; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;"><i class="fa-solid fa-bolt"></i></div>
-                                <div>
-                                    <h4 style="margin: 0;">Electrician</h4>
-                                    <small style="color: var(--text-muted);">22% of total jobs</small>
-                                </div>
+                                <div><h4 style="margin: 0;">Electrician</h4><small style="color: var(--text-muted);">22% of total jobs</small></div>
                             </div>
                             <strong style="color: var(--success);"><i class="fa-solid fa-arrow-trend-up"></i> +5%</strong>
                         </div>
-                        
-                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <div class="flex-between">
                             <div style="display: flex; align-items: center; gap: 12px;">
                                 <div style="width: 40px; height: 40px; border-radius: 50%; background: #DCFCE7; color: #16A34A; display: flex; align-items: center; justify-content: center; font-size: 1.2rem;"><i class="fa-solid fa-broom"></i></div>
-                                <div>
-                                    <h4 style="margin: 0;">Cleaners</h4>
-                                    <small style="color: var(--text-muted);">15% of total jobs</small>
-                                </div>
+                                <div><h4 style="margin: 0;">Cleaners</h4><small style="color: var(--text-muted);">15% of total jobs</small></div>
                             </div>
                             <strong style="color: var(--danger);"><i class="fa-solid fa-arrow-trend-down"></i> -2%</strong>
                         </div>
                     </div>
                 </div>
+            </section>
+
+            <!-- TAB: VERIFICATION REQUESTS -->
+            <section id="sec-verifications" class="admin-tab" style="display: none;">
+                <div class="flex-between" style="margin-bottom: 24px;">
+                    <h3>Pending Verification Requests</h3>
+                    <p style="color: var(--text-muted);">Review workers' documents and approve them.</p>
+                </div>
+                
+                <table>
+                    <thead>
+                        <tr><th>Worker Details</th><th>Skill</th><th>Location</th><th>Status</th><th>Actions</th></tr>
+                    </thead>
+                    <tbody id="verificationRequestsBody">
+                        <tr>
+                            <td colspan="5" style="text-align: center; padding: 40px;">
+                                <i class="fa-solid fa-spinner fa-spin"></i> Loading requests...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </section>
 
             <!-- TAB: SETTINGS -->
@@ -477,32 +380,32 @@
                     <form onsubmit="event.preventDefault(); alert('Settings saved successfully!');">
                         
                         <h4 style="margin-bottom: 16px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">Application Preferences</h4>
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px;">
+                        <div class="grid-2" style="margin-bottom: 24px;">
                             <div>
                                 <label style="display: block; font-weight: 500; margin-bottom: 6px;">Default Language</label>
-                                <select style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 4px;">
+                                <select class="form-control">
                                     <option>English</option>
                                     <option>Urdu</option>
                                 </select>
                             </div>
                             <div>
                                 <label style="display: block; font-weight: 500; margin-bottom: 6px;">Minimum Daily Wage (Rs)</label>
-                                <input type="number" value="1200" style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 4px;">
+                                <input type="number" class="form-control" value="1200">
                             </div>
                         </div>
 
                         <h4 style="margin-bottom: 16px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">System Integrations</h4>
-                        <div style="margin-bottom: 16px;">
-                            <label style="display: block; font-weight: 500; margin-bottom: 6px;">SMS Gateway API Key (Twilio/Localize)</label>
-                            <input type="password" value="sk_test_1234567890abcdef" style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 4px;">
+                        <div class="form-group">
+                            <label>SMS Gateway API Key (Twilio/Localize)</label>
+                            <input type="password" class="form-control" value="sk_test_1234567890abcdef">
                         </div>
-                        <div style="margin-bottom: 32px;">
-                            <label style="display: block; font-weight: 500; margin-bottom: 6px;">Google Maps API Key</label>
-                            <input type="password" value="AIzaSyBw-xyz1234..." style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 4px;">
+                        <div class="form-group" style="margin-bottom: 32px;">
+                            <label>Google Maps API Key</label>
+                            <input type="password" class="form-control" value="AIzaSyBw-xyz1234...">
                         </div>
 
                         <h4 style="margin-bottom: 16px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">Danger Zone</h4>
-                        <div style="display: flex; align-items: center; justify-content: space-between; padding: 16px; background: #FEF2F2; border: 1px solid #FECACA; border-radius: 4px; margin-bottom: 24px;">
+                        <div class="flex-between" style="padding: 16px; background: #FEF2F2; border: 1px solid #FECACA; border-radius: 4px; margin-bottom: 24px;">
                             <div>
                                 <strong style="color: var(--danger); display: block;">Maintenance Mode</strong>
                                 <small style="color: var(--text-muted);">Take the platform offline for updates. Users will see a "Be right back" screen.</small>
@@ -527,22 +430,12 @@
 
     <script>
         function switchAdminTab(tabId, element) {
-            // Hide all sections
-            const tabs = document.querySelectorAll('.admin-tab');
-            tabs.forEach(tab => tab.style.display = 'none');
-            
-            // Remove active class from all links
-            const links = document.querySelectorAll('.sidebar a');
-            links.forEach(link => link.classList.remove('active'));
-            
-            // Show selected section
+            document.querySelectorAll('.admin-tab').forEach(tab => tab.style.display = 'none');
+            document.querySelectorAll('.sidebar a').forEach(link => link.classList.remove('active'));
             document.getElementById(tabId).style.display = 'block';
-            
-            // Add active class to clicked link
-            if(element) element.classList.add('active');
+            if (element) element.classList.add('active');
         }
     </script>
-        </main>
-    </div>
 </body>
 </html>
+
