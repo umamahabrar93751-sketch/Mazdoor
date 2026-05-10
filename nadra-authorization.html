@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authorizing from NADRA - Mazdoor.com</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .loading-container {
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .spinner {
+            width: 80px;
+            height: 80px;
+            border: 8px solid rgba(13, 110, 253, 0.2);
+            border-top: 8px solid #0d6efd;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 24px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .status-text {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 12px;
+        }
+        
+        body.lang-ur .status-text {
+            font-family: 'Noto Nastaliq Urdu', serif;
+        }
+
+        .status-subtext {
+            color: #666;
+            font-size: 1.1rem;
+        }
+        
+        .success-icon {
+            display: none;
+            font-size: 5rem;
+            color: #198754;
+            margin-bottom: 24px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <i class="fa-solid fa-helmet-safety text-primary"></i>
+                <span data-en="Mazdoor.com" data-ur="مزدور ڈاٹ کام">Mazdoor.com</span>
+            </a>
+        </div>
+    </nav>
+
+    <main class="section">
+        <div class="section-container loading-container">
+            <div id="spinner" class="spinner"></div>
+            <i id="successIcon" class="fa-solid fa-circle-check success-icon"></i>
+            
+            <h2 id="statusText" class="status-text" data-en="Authorizing from NADRA Database..." data-ur="نادرہ ڈیٹا بیس سے توثیق ہو رہی ہے...">Authorizing from NADRA Database...</h2>
+            <p id="statusSubtext" class="status-subtext" data-en="Please wait while we verify your CNIC and documents." data-ur="براہ کرم انتظار کریں جبکہ ہم آپ کے شناختی کارڈ اور دستاویزات کی تصدیق کر رہے ہیں۔">Please wait while we verify your CNIC and documents.</p>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const pendingDetailsStr = localStorage.getItem('pendingWorkerDetails');
+            
+            if (!pendingDetailsStr) {
+                // If accessed directly without filling form, send back to form
+                window.location.href = 'verification-form.html';
+                return;
+            }
+
+            const workerDetails = JSON.parse(pendingDetailsStr);
+            const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{"id": 1}'); // Use logged in user ID if available
+
+            // Simulate NADRA authorization delay (3 seconds)
+            setTimeout(async () => {
+                try {
+                    const res = await fetch('http://localhost:3000/api/worker/verify', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            user_id: currentUser.id,
+                            name: workerDetails.name,
+                            cnic: workerDetails.cnic,
+                            skill: workerDetails.skill,
+                            location: workerDetails.location
+                        })
+                    });
+
+                    if (res.ok) {
+                        // Show success UI
+                        document.getElementById('spinner').style.display = 'none';
+                        document.getElementById('successIcon').style.display = 'block';
+                        
+                        const isUrdu = document.body.classList.contains('lang-ur');
+                        
+                        const statusText = document.getElementById('statusText');
+                        statusText.innerText = isUrdu ? 'درخواست بھیج دی گئی!' : 'Request Submitted!';
+                        
+                        const statusSubtext = document.getElementById('statusSubtext');
+                        statusSubtext.innerText = isUrdu ? 'آپ کی درخواست ایڈمن کی منظوری کے لیے بھیج دی گئی ہے۔' : 'Your verification request has been sent for admin approval.';
+
+                        // Clean up pending details
+                        localStorage.removeItem('pendingWorkerDetails');
+
+                        // Redirect to homepage after another 2 seconds
+                        setTimeout(() => {
+                            window.location.href = 'index.html';
+                        }, 2000);
+                    } else {
+                        alert("Error submitting request");
+                        window.location.href = 'verification-form.html';
+                    }
+                } catch(e) {
+                    console.error(e);
+                    alert("Could not connect to server");
+                }
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
