@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+                <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -29,8 +29,36 @@
             <div class="nav-actions">
                 <button id="themeToggle" class="btn btn-outline" title="Toggle Dark/Light Mode" style="padding: 8px 12px;"><i class="fa-solid fa-moon"></i></button>
                 <button id="langToggle" class="btn btn-lang" title="Switch Language"><i class="fa-solid fa-language"></i> <span id="langText">اردو</span></button>
-                <a href="login.html" class="btn btn-outline" data-en="Login" data-ur="لاگ ان">Login</a>
-                <a href="login.html#register" class="btn btn-primary d-none-mobile" data-en="Register" data-ur="رجسٹر کریں">Register</a>
+                <a href="login.html" class="btn btn-outline" id="loginBtnNav" data-en="Login" data-ur="لاگ ان">Login</a>
+                <a href="login.html#register" class="btn btn-primary d-none-mobile" id="registerBtnNav" data-en="Register" data-ur="رجسٹر کریں">Register</a>
+                
+                <!-- Three Dots Menu (Hover Dropdown) -->
+                <div class="user-menu-container dropdown-hover" id="userMenuContainer" style="position: relative; display: none;">
+                    <button id="userMenuBtn" class="btn btn-outline" style="padding: 8px 12px; border: none; cursor: pointer;"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+                    <div id="userMenuDropdown" class="user-dropdown dropdown-menu-content" style="display: none; position: absolute; right: 0; top: 100%; background: white; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); width: 150px; z-index: 9999; margin-top: 4px; border: 1px solid #eee;">
+                        <a href="#" data-action="logout" style="display: block; padding: 12px 16px; color: #dc3545; text-decoration: none; font-weight: 500; text-align: left; transition: background 0.2s;"><i class="fa-solid fa-arrow-right-from-bracket" style="margin-right: 8px;"></i> Logout</a>
+                    </div>
+                </div>
+                
+                <style>
+                    /* Dropdown hover logic */
+                    .dropdown-hover:hover .dropdown-menu-content {
+                        display: block !important;
+                    }
+                    .dropdown-menu-content::before {
+                        content: '';
+                        position: absolute;
+                        top: -10px;
+                        left: 0;
+                        right: 0;
+                        height: 10px;
+                        background: transparent;
+                    }
+                    #logoutBtn:hover {
+                        background-color: #fff5f5;
+                        border-radius: 8px;
+                    }
+                </style>
             </div>
             
             <!-- Mobile Menu Toggle -->
@@ -58,6 +86,12 @@
                         <i class="fa-solid fa-briefcase icon-large"></i>
                         <span data-en="Find Work" data-ur="کام تلاش کریں">Find Work</span>
                         <small data-en="Mazdoor / Helper" data-ur="مزدور / مددگار">Mazdoor / Helper</small>
+                    </a>
+
+                    <a href="verification-form.html" class="btn btn-massive" style="background-color: #F59E0B; color: white; border-bottom: 6px solid #D97706; border-left: 1px solid rgba(255,255,255,0.1); border-right: 1px solid rgba(255,255,255,0.1); border-top: 1px solid rgba(255,255,255,0.1);">
+                        <i class="fa-solid fa-shield-halved icon-large"></i>
+                        <span data-en="Get Verified" data-ur="توثیق حاصل کریں">Get Verified</span>
+                        <small data-en="Upload CNIC & Docs" data-ur="شناختی کارڈ اور دستاویزات اپ لوڈ کریں">Upload CNIC & Docs</small>
                     </a>
                 </div>
             </div>
@@ -100,6 +134,20 @@
                     <div class="category-card">
                         <div class="cat-icon bg-orange"><i class="fa-solid fa-hands-holding"></i></div>
                         <h3 data-en="General Helper" data-ur="مددگار">General Helper</h3>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Verified Workers Section -->
+        <section id="verified-workers" class="section">
+            <div class="section-container">
+                <h2 class="section-title text-center" data-en="Top Verified Workers" data-ur="تصدیق شدہ مزدور">Top Verified Workers</h2>
+                
+                <div class="category-grid" id="verifiedWorkersList">
+                    <!-- Dynamic workers will be loaded here from backend -->
+                    <div style="text-align: center; grid-column: 1 / -1; padding: 20px;">
+                        <i class="fa-solid fa-spinner fa-spin"></i> Loading verified workers...
                     </div>
                 </div>
             </div>
