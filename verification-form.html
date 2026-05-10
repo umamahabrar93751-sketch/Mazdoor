@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Worker Verification - Mazdoor.com</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <i class="fa-solid fa-helmet-safety text-primary"></i>
+                <span>Mazdoor.com</span>
+            </a>
+        </div>
+    </nav>
+
+    <main class="section">
+        <div class="section-container">
+            <div class="form-container">
+                <div class="text-center" style="margin-bottom: 32px;">
+                    <i class="fa-solid fa-user-shield text-primary" style="font-size: 3rem; margin-bottom: 16px;"></i>
+                    <h2>Worker Verification</h2>
+                    <p>Enter your details to become a verified worker and get more jobs.</p>
+                </div>
+
+                <form id="verificationForm" onsubmit="handleVerificationSubmit(event)">
+                    <div class="form-group">
+                        <label for="fullName">Full Name (as per CNIC)</label>
+                        <input type="text" id="fullName" class="form-input" placeholder="e.g. Ali Raza" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cnicNumber">CNIC Number</label>
+                        <input type="text" id="cnicNumber" class="form-input" placeholder="35202-XXXXXXX-X" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cnicFront">CNIC Front Photo</label>
+                        <input type="file" id="cnicFront" class="form-input" accept="image/*" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cnicBack">CNIC Back Photo</label>
+                        <input type="file" id="cnicBack" class="form-input" accept="image/*" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="otherDocs">Other Documents (e.g. Utility Bill, Police Clearance) - Optional</label>
+                        <input type="file" id="otherDocs" class="form-input" accept="image/*,.pdf" multiple>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="location">Location / Area</label>
+                        <input type="text" id="location" class="form-input" placeholder="e.g. DHA Phase 6, Lahore" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="skill">Primary Skill</label>
+                        <select id="skill" class="form-input" required>
+                            <option value="">Select a skill</option>
+                            <option value="Construction">Construction</option>
+                            <option value="Electrician">Electrician</option>
+                            <option value="Plumber">Plumber</option>
+                            <option value="Painter">Painter</option>
+                            <option value="Cleaner">Cleaner</option>
+                            <option value="Driver">Driver</option>
+                            <option value="Helper">General Helper</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block" style="margin-top: 24px;">
+                        <i class="fa-solid fa-paper-plane"></i> Submit for Verification
+                    </button>
+                    
+                    <a href="worker-dashboard.html" class="btn btn-outline btn-block" style="margin-top: 12px; border: none;">
+                        Cancel and Go Back
+                    </a>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+    <script>
+        function handleVerificationSubmit(event) {
+            event.preventDefault();
+            const name = document.getElementById('fullName').value;
+            const cnic = document.getElementById('cnicNumber').value;
+            const location = document.getElementById('location').value;
+            const skill = document.getElementById('skill').value;
+
+            // Save basic info temporarily in localStorage to pass to the NADRA simulation
+            localStorage.setItem('pendingWorkerDetails', JSON.stringify({
+                name, cnic, location, skill
+            }));
+
+            // Redirect to the simulated NADRA authorization page
+            window.location.href = 'nadra-authorization.html';
+        }
+    </script>
+</body>
+</html>
